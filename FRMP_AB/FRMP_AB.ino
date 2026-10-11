@@ -1,9 +1,9 @@
 /*
-  Fantasy Rampage: http://www.team-arg.org/frmp-manual.html
+  Fantasy Rampage: https://t-arg.github.io/ID-48-Fantasy-Rampage/
 
-  Arduboy version 1.0:  http://www.team-arg.org/frmp-downloads.html
+  Arduboy version 1.0:  https://github.com/T-arg/ID-48-Fantasy-Rampage
 
-  MADE by TEAM a.r.g. : http://www.team-arg.org/more-about.html
+  MADE by TEAM a.r.g. : https://t-arg.github.io/
 
   2017 - Trodoss - JO3RI
 
