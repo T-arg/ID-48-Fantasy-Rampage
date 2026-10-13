@@ -63,6 +63,8 @@ char PLAYER_C_score = 0;
 char curr_player = PLAYER_P;  //current player (2 player mode)
 
 char hand_ptr = 0;
+byte sfxDelay = 0;
+byte sfxNext = 0;
 
 char wait_ctr = 0;
 char wait_loop = 0;
@@ -314,9 +316,9 @@ void startPlayRound() {
     if (!deck_drawn) drawn[PLAYER_C] = draw_from_deck(player_c_hand);
 
     disp_state = GAME_SHOW_START_ROUND;
+    if (game_mode == GAME_MODE_ADVANCED) sfx(SFX_BOOST);
   } else {
     disp_state = GAME_SHOW_WINNER;
-    songPlayed = false;
   }
 }
 
@@ -377,6 +379,7 @@ void computer_play_hand() {
   }
   if (last_winner == PLAYER_C) {
     disp_state = GAME_SHOW_COMPUTER_CARD_PLAYED;
+    sfx(SFX_PLAY);
   } else {
     disp_state = GAME_DETERMINE_ROUND_WINNER;
   }
@@ -432,6 +435,8 @@ void determine_round_winner() {
       round_winner[round_count - 1] = PLAYER_C;
     }
   }
+  sfxNext = (round_winner[round_count - 1] == PLAYER_P || player_mode == PLAYER_MODE_2_PLAYER) ? SFX_WIN : SFX_LOSE;
+  sfxDelay = 6;
   disp_state = GAME_SHOW_CARDS_IN_PLAY;
 }
 
@@ -449,6 +454,7 @@ void stateShowPlayerWait() {
     if (wait_ctr > 15) {
       wait_ctr = 0;
       wait_loop++;
+      sfx(SFX_TICK);
     }
 
   } else {
@@ -459,6 +465,7 @@ void stateShowPlayerWait() {
     {
       if (!deck_drawn) {
         disp_state = GAME_SHOW_DRAW_CARD;
+        sfx(SFX_DRAW);
       } else {
         if (curr_player == PLAYER_P) disp_state = GAME_START_PLAYER_1_HAND;
         if (curr_player == PLAYER_C) disp_state = GAME_START_PLAYER_2_HAND;
@@ -476,6 +483,7 @@ void start_player_wait() {
 }
 
 void startGame() {
+  musicPickGameTune();
   memset(round_winner, -1, sizeof(round_winner));
   deck_ptr = 0;
   setup_deck();
@@ -532,7 +540,6 @@ void showScore()
 void stateMenuPlay()
 {
   gameState = STATE_GAME_SELECT_GAME_MODE;
-  ATM.stop();
 };
 
 void stateGameSelectPlayerMode() {
@@ -541,9 +548,10 @@ void stateGameSelectPlayerMode() {
   print_progmem(32, 36, text_1_player);
   print_progmem(32, 48, text_2_player);
 
-  if (arduboy.justPressed(UP_BUTTON)) player_mode = PLAYER_MODE_1_PLAYER;
-  if (arduboy.justPressed(DOWN_BUTTON)) player_mode = PLAYER_MODE_2_PLAYER;
+  if (arduboy.justPressed(UP_BUTTON) && player_mode) { player_mode = PLAYER_MODE_1_PLAYER; sfx(SFX_MOVE); }
+  if (arduboy.justPressed(DOWN_BUTTON) && !player_mode) { player_mode = PLAYER_MODE_2_PLAYER; sfx(SFX_MOVE); }
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+    sfx(SFX_SELECT);
     startGame();
     gameState = STATE_GAME_PLAYING;
   }
@@ -556,9 +564,10 @@ void stateGameSelectGameMode() {
   print_progmem(32, 36, text_basic);
   print_progmem(32, 48, text_advanced);
 
-  if (arduboy.justPressed(UP_BUTTON)) game_mode = GAME_MODE_BASIC;
-  if (arduboy.justPressed(DOWN_BUTTON)) game_mode = GAME_MODE_ADVANCED;
+  if (arduboy.justPressed(UP_BUTTON) && game_mode) { game_mode = GAME_MODE_BASIC; sfx(SFX_MOVE); }
+  if (arduboy.justPressed(DOWN_BUTTON) && !game_mode) { game_mode = GAME_MODE_ADVANCED; sfx(SFX_MOVE); }
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+    sfx(SFX_SELECT);
     stateGameSelectPlayerMode();
     gameState = STATE_GAME_SELECT_PLAYER_MODE;
   }
@@ -607,6 +616,7 @@ void stateShowStartRound() {
     if (player_mode == PLAYER_MODE_1_PLAYER) {
       if (!deck_drawn) {
         disp_state = GAME_SHOW_DRAW_CARD;
+        sfx(SFX_DRAW);
       } else {
         //use last_winner to detremine who can play first:
         //if last_winner was computer (PLAYER_C) then
@@ -691,9 +701,10 @@ void stateShowPlayer1Hand () {
   }
 
   if (arduboy.pressed(UP_BUTTON)) disp_state = GAME_SHOW_REALLY_QUIT;
-  if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_p_hand_size)) hand_ptr++;
-  if (arduboy.justPressed(LEFT_BUTTON) && (hand_ptr > 0)) hand_ptr--;
+  if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_p_hand_size)) { hand_ptr++; sfx(SFX_MOVE); }
+  if (arduboy.justPressed(LEFT_BUTTON) && (hand_ptr > 0)) { hand_ptr--; sfx(SFX_MOVE); }
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+    sfx(SFX_PLAY);
     in_play[PLAYER_P] = player_p_hand[hand_ptr];
     player_p_hand[hand_ptr] = -1;
 
@@ -734,9 +745,10 @@ void stateShowPlayer2Hand () {
   }
 
   if (arduboy.pressed(UP_BUTTON)) disp_state = GAME_SHOW_REALLY_QUIT;
-  if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_c_hand_size)) hand_ptr++;
-  if (arduboy.justPressed(LEFT_BUTTON) && (hand_ptr > 0)) hand_ptr--;
+  if (arduboy.justPressed(RIGHT_BUTTON) && (hand_ptr < player_c_hand_size)) { hand_ptr++; sfx(SFX_MOVE); }
+  if (arduboy.justPressed(LEFT_BUTTON) && (hand_ptr > 0)) { hand_ptr--; sfx(SFX_MOVE); }
   if (arduboy.justPressed(A_BUTTON | B_BUTTON)) {
+    sfx(SFX_PLAY);
     in_play[PLAYER_C] = player_c_hand[hand_ptr];
     player_c_hand[hand_ptr] = -1;
 
@@ -788,6 +800,7 @@ void stateShowCardsInPlay() {
   char player_c_mod = 0;
 
   showScore();
+  if (sfxDelay && !--sfxDelay) sfx(sfxNext);
 
   //determine modifiers for advanced play
   if (game_mode == GAME_MODE_ADVANCED) {
@@ -829,11 +842,6 @@ void stateShowWinner() {
 
   if (PLAYER_P_score > PLAYER_C_score) {
     //player wins
-    if (!songPlayed)
-    {
-      ATM.play(victorySong);
-      songPlayed = true;
-    }
     print_progmem(51, 56, text_win);
     sprites.drawSelfMasked(52, 26, winningBadge, 0);
     if (player_mode == PLAYER_MODE_1_PLAYER) {
@@ -849,19 +857,9 @@ void stateShowWinner() {
       print_progmem(51, 56, text_win);
       sprites.drawSelfMasked(52, 26, winningBadge, 1);
       if (player_mode == PLAYER_MODE_1_PLAYER) {
-        if (!songPlayed)
-        {
-          ATM.play(lostSong);
-          songPlayed = true;
-        }
         print_progmem(44, 16, text_computer);
       } else {
         print_progmem(44, 16, text_player_2);
-        if (!songPlayed)
-        {
-          ATM.play(victorySong);
-          songPlayed = true;
-        }
       }
 
     }
@@ -876,7 +874,7 @@ void stateShowWinner() {
   if (arduboy.justPressed(A_BUTTON | B_BUTTON))
   {
     gameState = STATE_MENU_MAIN;
-    ATM.play(themeSong);
+    sfx(SFX_SELECT);
   }
 }
 
@@ -895,7 +893,7 @@ void stateShowReallyQuit() {
     {
       case true:
         gameState = STATE_MENU_MAIN;
-        ATM.play(themeSong);
+        sfx(SFX_BACK);
         break;
       case false:
         disp_state = prev_disp_state;
