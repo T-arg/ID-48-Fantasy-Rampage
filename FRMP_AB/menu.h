@@ -94,7 +94,7 @@ void drawTwinkles()
   {
     byte t = (globalCounter + pgm_read_byte(&twinkleXY[i * 3 + 2])) % 20;   // 20 frames for one twinkle
     if (t > 10) t = 20 - t;                                   // grow, then shrink
-    byte arm = t / 3;
+    byte arm = (t + 1) / 4;                                   // arms of 0, 1 or 2 pixels (a 5x5 star at most)
     if (t)
     {
       byte x = pgm_read_byte(&twinkleXY[i * 3]);

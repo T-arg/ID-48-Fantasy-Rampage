@@ -20,7 +20,7 @@
 #define MV(v) ((v) * MUSIC_VOL_PCT / 100)
 #define MS(n) ((uint8_t)-((((n) * MUSIC_VOL_PCT + 50) / 100) < 1 ? 1 : (((n) * MUSIC_VOL_PCT + 50) / 100)))
 
-// bytes per song:  frmpTitle 429, frmpEarth 429, frmpFire 460, frmpWater 363, frmpAir 486, frmpDragon 426, frmpWin 63, frmpLose 29  (total 2685)
+// bytes per song:  frmpTitle 421, frmpEarth 416, frmpFire 441, frmpWater 354, frmpAir 445, frmpDragon 419, frmpWin 63, frmpLose 29  (total 2588)
 // bytes of effects: 147
 
 // =====================================================================================================================
@@ -30,25 +30,27 @@
 // ---------------------------------------------------------------------------
 // Fantasy Rampage - title screen
 // D minor, an epic fantasy march: the monsters gather (16 bars). 100 % volume.
-// 429 bytes
+// 421 bytes
 // ---------------------------------------------------------------------------
-Song frmpTitle[] = {          // total song in bytes = 429
-  0x08,                         // Number of tracks
+Song frmpTitle[] = {          // total song in bytes = 421
+  0x0A,                         // Number of tracks
   0x00, 0x00,                   // Address of track 0   //0  lead
-  0xA6, 0x00,                   // Address of track 1   //166  bar
-  0xAB, 0x00,                   // Address of track 2   //171  bass
-  0x01, 0x01,                   // Address of track 3   //257  stabM
-  0x12, 0x01,                   // Address of track 4   //274  stabm
-  0x23, 0x01,                   // Address of track 5   //291  chords
-  0x77, 0x01,                   // Address of track 6   //375  drums
-  0x7E, 0x01,                   // Address of track 7   //382  pair
+  0x9E, 0x00,                   // Address of track 1   //158  bar
+  0xA3, 0x00,                   // Address of track 2   //163  bass
+  0xF9, 0x00,                   // Address of track 3   //249  stabM
+  0xFF, 0x00,                   // Address of track 4   //255  stabm
+  0x05, 0x01,                   // Address of track 5   //261  chords
+  0x59, 0x01,                   // Address of track 6   //345  drums
+  0x60, 0x01,                   // Address of track 7   //352  pair
+  0x7A, 0x01,                   // Address of track 8   //378  sh0
+  0x88, 0x01,                   // Address of track 9   //392  sh1
 
   0x00,                         // Channel 0 entry track (lead)
   0x05,                         // Channel 1 entry track (chords)
   0x02,                         // Channel 2 entry track (bass)
   0x06,                         // Channel 3 entry track (drums)
 
-  //"Track 0" lead  [166 bytes]
+  //"Track 0" lead  [158 bytes]
   ATM_VOL(46),
   ATM_SL_VOL((uint8_t)-3),
   ATM_NOTE_D5,
@@ -74,9 +76,7 @@ Song frmpTitle[] = {          // total song in bytes = 429
   ATM_NOTE_A5_,
   ATM_DELAY(16),
   ATM_NOTE_D6,
-  ATM_DELAY(8),
-  ATM_NOTE_F6,
-  ATM_DELAY(8),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_D6,
   ATM_DELAY(16),
   ATM_NOTE_A5_,
@@ -92,9 +92,7 @@ Song frmpTitle[] = {          // total song in bytes = 429
   ATM_NOTE_C6,
   ATM_DELAY(32),
   ATM_NOTE_D6,
-  ATM_DELAY(8),
-  ATM_NOTE_F6,
-  ATM_DELAY(8),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_A6,
   ATM_DELAY(16),
   ATM_NOTE_F6,
@@ -102,13 +100,9 @@ Song frmpTitle[] = {          // total song in bytes = 429
   ATM_NOTE_D6,
   ATM_DELAY(16),
   ATM_NOTE_C6,
-  ATM_DELAY(8),
-  ATM_NOTE_F6,
-  ATM_DELAY(8),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_A5,
-  ATM_DELAY(8),
-  ATM_NOTE_F6,
-  ATM_DELAY(8),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_C6,
   ATM_DELAY(16),
   ATM_NOTE_A5,
@@ -154,9 +148,7 @@ Song frmpTitle[] = {          // total song in bytes = 429
   ATM_NOTE_D6,
   ATM_DELAY(32),
   ATM_NOTE_C6,
-  ATM_DELAY(8),
-  ATM_NOTE_F6,
-  ATM_DELAY(8),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_A6,
   ATM_DELAY(16),
   ATM_NOTE_F6,
@@ -174,9 +166,7 @@ Song frmpTitle[] = {          // total song in bytes = 429
   ATM_NOTE_E6,
   ATM_DELAY(16),
   ATM_NOTE_D6,
-  ATM_DELAY(8),
-  ATM_NOTE_F6,
-  ATM_DELAY(8),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_A6_,
   ATM_DELAY(16),
   ATM_NOTE_F6,
@@ -194,13 +184,9 @@ Song frmpTitle[] = {          // total song in bytes = 429
   ATM_NOTE_C6_,
   ATM_DELAY(16),
   ATM_NOTE_D6,
-  ATM_DELAY(8),
-  ATM_NOTE_F6,
-  ATM_DELAY(8),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_A6,
-  ATM_DELAY(8),
-  ATM_NOTE_F6,
-  ATM_DELAY(8),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_D6,
   ATM_DELAY(16),
   ATM_NOTE_A5,
@@ -257,30 +243,14 @@ Song frmpTitle[] = {          // total song in bytes = 429
   ATM_REPEAT(0, 1),   // 1x bar
   ATM_GOTO(2),   // -> bass
 
-  //"Track 3" stabM  [17 bytes]
+  //"Track 3" stabM  [6 bytes]
   ATM_ARP(0x43, 0x22),
-  ATM_DELAY(16),
-  ATM_VOL(28),
-  ATM_NOTE_D3,
-  ATM_SL_VOL((uint8_t)-2),
-  ATM_DELAY(32),
-  ATM_VOL(28),
-  ATM_NOTE_D3,
-  ATM_SL_VOL((uint8_t)-2),
-  ATM_DELAY(16),
+  ATM_GOTO(8),   // -> sh0
   ATM_RETURN,
 
-  //"Track 4" stabm  [17 bytes]
+  //"Track 4" stabm  [6 bytes]
   ATM_ARP(0x34, 0x22),
-  ATM_DELAY(16),
-  ATM_VOL(28),
-  ATM_NOTE_D3,
-  ATM_SL_VOL((uint8_t)-2),
-  ATM_DELAY(32),
-  ATM_VOL(28),
-  ATM_NOTE_D3,
-  ATM_SL_VOL((uint8_t)-2),
-  ATM_DELAY(16),
+  ATM_GOTO(8),   // -> sh0
   ATM_RETURN,
 
   //"Track 5" chords  [84 bytes]
@@ -342,30 +312,51 @@ Song frmpTitle[] = {          // total song in bytes = 429
   ATM_DELAY(8),
   ATM_RETURN,
 
+  //"Track 8" sh0  [14 bytes]
+  ATM_DELAY(16),
+  ATM_VOL(28),
+  ATM_NOTE_D3,
+  ATM_SL_VOL((uint8_t)-2),
+  ATM_DELAY(32),
+  ATM_VOL(28),
+  ATM_NOTE_D3,
+  ATM_SL_VOL((uint8_t)-2),
+  ATM_DELAY(16),
+  ATM_RETURN,
+
+  //"Track 9" sh1  [4 bytes]
+  ATM_DELAY(8),
+  ATM_NOTE_F6,
+  ATM_DELAY(8),
+  ATM_RETURN,
+
 };
 
 // ---------------------------------------------------------------------------
 // Fantasy Rampage - in game 1: Stonehold
 // C major, a solid slow march: heavy stones and steady steps (earth).
-// 429 bytes
+// 416 bytes
 // ---------------------------------------------------------------------------
-Song frmpEarth[] = {          // total song in bytes = 429
-  0x08,                         // Number of tracks
+Song frmpEarth[] = {          // total song in bytes = 416
+  0x0B,                         // Number of tracks
   0x00, 0x00,                   // Address of track 0   //0  lead
-  0x9C, 0x00,                   // Address of track 1   //156  bar
-  0xA1, 0x00,                   // Address of track 2   //161  bass
-  0xF7, 0x00,                   // Address of track 3   //247  stabM
-  0x08, 0x01,                   // Address of track 4   //264  stabm
-  0x19, 0x01,                   // Address of track 5   //281  chords
-  0x6D, 0x01,                   // Address of track 6   //365  drums
-  0x74, 0x01,                   // Address of track 7   //372  pair
+  0x94, 0x00,                   // Address of track 1   //148  bar
+  0x99, 0x00,                   // Address of track 2   //153  bass
+  0xEF, 0x00,                   // Address of track 3   //239  stabM
+  0xF5, 0x00,                   // Address of track 4   //245  stabm
+  0xFB, 0x00,                   // Address of track 5   //251  chords
+  0x4F, 0x01,                   // Address of track 6   //335  drums
+  0x56, 0x01,                   // Address of track 7   //342  pair
+  0x6B, 0x01,                   // Address of track 8   //363  sh0
+  0x72, 0x01,                   // Address of track 9   //370  sh1
+  0x80, 0x01,                   // Address of track 10   //384  sh2
 
   0x00,                         // Channel 0 entry track (lead)
   0x05,                         // Channel 1 entry track (chords)
   0x02,                         // Channel 2 entry track (bass)
   0x06,                         // Channel 3 entry track (drums)
 
-  //"Track 0" lead  [156 bytes]
+  //"Track 0" lead  [148 bytes]
   ATM_VOL(MV(44)),
   ATM_SL_VOL(MS(3)),
   ATM_NOTE_C5,
@@ -377,10 +368,7 @@ Song frmpEarth[] = {          // total song in bytes = 429
   ATM_NOTE_C6,
   ATM_DELAY(32),
   ATM_NOTE_B5,
-  ATM_DELAY(8),
-  ATM_NOTE_C6,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
+  ATM_GOTO(10),   // -> sh2
   ATM_DELAY(16),
   ATM_NOTE_C6,
   ATM_DELAY(32),
@@ -407,10 +395,7 @@ Song frmpEarth[] = {          // total song in bytes = 429
   ATM_NOTE_E5,
   ATM_DELAY(8),
   ATM_NOTE_G5,
-  ATM_DELAY(8),
-  ATM_NOTE_C6,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
+  ATM_GOTO(10),   // -> sh2
   ATM_DELAY(8),
   ATM_NOTE_G6,
   ATM_DELAY(16),
@@ -421,10 +406,7 @@ Song frmpEarth[] = {          // total song in bytes = 429
   ATM_NOTE_C6,
   ATM_DELAY(8),
   ATM_NOTE_A5,
-  ATM_DELAY(8),
-  ATM_NOTE_C6,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
+  ATM_GOTO(10),   // -> sh2
   ATM_DELAY(32),
   ATM_NOTE_C6,
   ATM_DELAY(8),
@@ -465,10 +447,7 @@ Song frmpEarth[] = {          // total song in bytes = 429
   ATM_NOTE_A5,
   ATM_DELAY(16),
   ATM_NOTE_G5,
-  ATM_DELAY(8),
-  ATM_NOTE_C6,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
+  ATM_GOTO(10),   // -> sh2
   ATM_DELAY(16),
   ATM_NOTE_G6,
   ATM_DELAY(16),
@@ -564,30 +543,14 @@ Song frmpEarth[] = {          // total song in bytes = 429
   ATM_REPEAT(0, 1),   // 1x bar
   ATM_GOTO(2),   // -> bass
 
-  //"Track 3" stabM  [17 bytes]
+  //"Track 3" stabM  [6 bytes]
   ATM_ARP(0x43, 0x22),
-  ATM_DELAY(16),
-  ATM_VOL(MV(26)),
-  ATM_NOTE_C3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(32),
-  ATM_VOL(MV(26)),
-  ATM_NOTE_C3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh1
   ATM_RETURN,
 
-  //"Track 4" stabm  [17 bytes]
+  //"Track 4" stabm  [6 bytes]
   ATM_ARP(0x34, 0x22),
-  ATM_DELAY(16),
-  ATM_VOL(MV(26)),
-  ATM_NOTE_C3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(32),
-  ATM_VOL(MV(26)),
-  ATM_NOTE_C3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh1
   ATM_RETURN,
 
   //"Track 5" chords  [84 bytes]
@@ -631,28 +594,43 @@ Song frmpEarth[] = {          // total song in bytes = 429
   ATM_REPEAT(15, 7),   // 16x pair
   ATM_GOTO(6),   // -> drums
 
-  //"Track 7" pair  [36 bytes]
+  //"Track 7" pair  [21 bytes]
   ATM_VOL(MV(40)),
   ATM_SL_VOL(MS(12)),
+  ATM_GOTO(8),   // -> sh0
+  ATM_GOTO(8),   // -> sh0
+  ATM_VOL(MV(24)),
+  ATM_SL_VOL(MS(6)),
+  ATM_GOTO(8),   // -> sh0
+  ATM_VOL(MV(24)),
+  ATM_SL_VOL(MS(6)),
+  ATM_GOTO(8),   // -> sh0
+  ATM_RETURN,
+
+  //"Track 8" sh0  [7 bytes]
   ATM_DELAY(8),
   ATM_VOL(MV(12)),
   ATM_SL_VOL(MS(12)),
+  ATM_DELAY(8),
+  ATM_RETURN,
+
+  //"Track 9" sh1  [14 bytes]
   ATM_DELAY(16),
-  ATM_VOL(MV(12)),
-  ATM_SL_VOL(MS(12)),
+  ATM_VOL(MV(26)),
+  ATM_NOTE_C3,
+  ATM_SL_VOL(MS(2)),
+  ATM_DELAY(32),
+  ATM_VOL(MV(26)),
+  ATM_NOTE_C3,
+  ATM_SL_VOL(MS(2)),
+  ATM_DELAY(16),
+  ATM_RETURN,
+
+  //"Track 10" sh2  [5 bytes]
   ATM_DELAY(8),
-  ATM_VOL(MV(24)),
-  ATM_SL_VOL(MS(6)),
+  ATM_NOTE_C6,
   ATM_DELAY(8),
-  ATM_VOL(MV(12)),
-  ATM_SL_VOL(MS(12)),
-  ATM_DELAY(8),
-  ATM_VOL(MV(24)),
-  ATM_SL_VOL(MS(6)),
-  ATM_DELAY(8),
-  ATM_VOL(MV(12)),
-  ATM_SL_VOL(MS(12)),
-  ATM_DELAY(8),
+  ATM_NOTE_E6,
   ATM_RETURN,
 
 };
@@ -660,43 +638,40 @@ Song frmpEarth[] = {          // total song in bytes = 429
 // ---------------------------------------------------------------------------
 // Fantasy Rampage - in game 2: Ember Dance
 // E minor, a driving eighth note bass and a hot lead (fire).
-// 460 bytes
+// 441 bytes
 // ---------------------------------------------------------------------------
-Song frmpFire[] = {          // total song in bytes = 460
-  0x08,                         // Number of tracks
+Song frmpFire[] = {          // total song in bytes = 441
+  0x0B,                         // Number of tracks
   0x00, 0x00,                   // Address of track 0   //0  lead
-  0xAC, 0x00,                   // Address of track 1   //172  bar
-  0xBD, 0x00,                   // Address of track 2   //189  bass
-  0x13, 0x01,                   // Address of track 3   //275  stabM
-  0x23, 0x01,                   // Address of track 4   //291  stabm
-  0x33, 0x01,                   // Address of track 5   //307  chords
-  0x87, 0x01,                   // Address of track 6   //391  drums
-  0x8E, 0x01,                   // Address of track 7   //398  pair
+  0xA4, 0x00,                   // Address of track 1   //164  bar
+  0xB5, 0x00,                   // Address of track 2   //181  bass
+  0x0B, 0x01,                   // Address of track 3   //267  stabM
+  0x13, 0x01,                   // Address of track 4   //275  stabm
+  0x1B, 0x01,                   // Address of track 5   //283  chords
+  0x6F, 0x01,                   // Address of track 6   //367  drums
+  0x76, 0x01,                   // Address of track 7   //374  pair
+  0x87, 0x01,                   // Address of track 8   //391  sh0
+  0x92, 0x01,                   // Address of track 9   //402  sh1
+  0x99, 0x01,                   // Address of track 10   //409  sh2
 
   0x00,                         // Channel 0 entry track (lead)
   0x05,                         // Channel 1 entry track (chords)
   0x02,                         // Channel 2 entry track (bass)
   0x06,                         // Channel 3 entry track (drums)
 
-  //"Track 0" lead  [172 bytes]
+  //"Track 0" lead  [164 bytes]
   ATM_VOL(MV(44)),
   ATM_SL_VOL(MS(4)),
   ATM_NOTE_E5,
   ATM_DELAY(8),
   ATM_NOTE_G5,
   ATM_DELAY(8),
-  ATM_NOTE_B5,
-  ATM_DELAY(8),
-  ATM_NOTE_G5,
-  ATM_DELAY(8),
+  ATM_GOTO(10),   // -> sh2
   ATM_NOTE_E6,
   ATM_DELAY(16),
   ATM_NOTE_B5,
   ATM_DELAY(16),
-  ATM_NOTE_B5,
-  ATM_DELAY(8),
-  ATM_NOTE_G5,
-  ATM_DELAY(8),
+  ATM_GOTO(10),   // -> sh2
   ATM_NOTE_E5,
   ATM_DELAY(8),
   ATM_NOTE_G5,
@@ -741,10 +716,7 @@ Song frmpFire[] = {          // total song in bytes = 460
   ATM_DELAY(8),
   ATM_NOTE_D6,
   ATM_DELAY(8),
-  ATM_NOTE_B5,
-  ATM_DELAY(8),
-  ATM_NOTE_G5,
-  ATM_DELAY(8),
+  ATM_GOTO(10),   // -> sh2
   ATM_NOTE_E5,
   ATM_DELAY(32),
   ATM_NOTE_A5,
@@ -773,10 +745,7 @@ Song frmpFire[] = {          // total song in bytes = 460
   ATM_DELAY(16),
   ATM_NOTE_E6,
   ATM_DELAY(16),
-  ATM_NOTE_B5,
-  ATM_DELAY(8),
-  ATM_NOTE_G5,
-  ATM_DELAY(8),
+  ATM_GOTO(10),   // -> sh2
   ATM_NOTE_E6,
   ATM_DELAY(32),
   ATM_NOTE_G5,
@@ -905,28 +874,16 @@ Song frmpFire[] = {          // total song in bytes = 460
   ATM_REPEAT(0, 1),   // 1x bar
   ATM_GOTO(2),   // -> bass
 
-  //"Track 3" stabM  [16 bytes]
+  //"Track 3" stabM  [8 bytes]
   ATM_ARP(0x43, 0x22),
-  ATM_VOL(MV(24)),
-  ATM_NOTE_E3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(32),
-  ATM_VOL(MV(24)),
-  ATM_NOTE_E3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(32),
+  ATM_GOTO(9),   // -> sh1
+  ATM_GOTO(9),   // -> sh1
   ATM_RETURN,
 
-  //"Track 4" stabm  [16 bytes]
+  //"Track 4" stabm  [8 bytes]
   ATM_ARP(0x34, 0x22),
-  ATM_VOL(MV(24)),
-  ATM_NOTE_E3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(32),
-  ATM_VOL(MV(24)),
-  ATM_NOTE_E3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(32),
+  ATM_GOTO(9),   // -> sh1
+  ATM_GOTO(9),   // -> sh1
   ATM_RETURN,
 
   //"Track 5" chords  [84 bytes]
@@ -970,25 +927,19 @@ Song frmpFire[] = {          // total song in bytes = 460
   ATM_REPEAT(15, 7),   // 16x pair
   ATM_GOTO(6),   // -> drums
 
-  //"Track 7" pair  [41 bytes]
-  ATM_VOL(MV(44)),
-  ATM_SL_VOL(MS(12)),
-  ATM_DELAY(8),
-  ATM_VOL(MV(12)),
-  ATM_SL_VOL(MS(12)),
-  ATM_DELAY(8),
-  ATM_VOL(MV(44)),
-  ATM_SL_VOL(MS(12)),
-  ATM_DELAY(8),
-  ATM_VOL(MV(12)),
-  ATM_SL_VOL(MS(12)),
-  ATM_DELAY(8),
+  //"Track 7" pair  [17 bytes]
+  ATM_GOTO(8),   // -> sh0
+  ATM_GOTO(8),   // -> sh0
   ATM_VOL(MV(26)),
   ATM_SL_VOL(MS(6)),
   ATM_DELAY(8),
   ATM_VOL(MV(12)),
   ATM_SL_VOL(MS(12)),
   ATM_DELAY(8),
+  ATM_GOTO(8),   // -> sh0
+  ATM_RETURN,
+
+  //"Track 8" sh0  [11 bytes]
   ATM_VOL(MV(44)),
   ATM_SL_VOL(MS(12)),
   ATM_DELAY(8),
@@ -997,38 +948,52 @@ Song frmpFire[] = {          // total song in bytes = 460
   ATM_DELAY(8),
   ATM_RETURN,
 
+  //"Track 9" sh1  [7 bytes]
+  ATM_VOL(MV(24)),
+  ATM_NOTE_E3,
+  ATM_SL_VOL(MS(2)),
+  ATM_DELAY(32),
+  ATM_RETURN,
+
+  //"Track 10" sh2  [5 bytes]
+  ATM_NOTE_B5,
+  ATM_DELAY(8),
+  ATM_NOTE_G5,
+  ATM_DELAY(8),
+  ATM_RETURN,
+
 };
 
 // ---------------------------------------------------------------------------
 // Fantasy Rampage - in game 3: Tide Waltz
 // D major, a flowing waltz: the tide comes in and goes out (water).
-// 363 bytes
+// 354 bytes
 // ---------------------------------------------------------------------------
-Song frmpWater[] = {          // total song in bytes = 363
-  0x08,                         // Number of tracks
+Song frmpWater[] = {          // total song in bytes = 354
+  0x0A,                         // Number of tracks
   0x00, 0x00,                   // Address of track 0   //0  lead
-  0x70, 0x00,                   // Address of track 1   //112  bar
-  0x73, 0x00,                   // Address of track 2   //115  bass
-  0xC9, 0x00,                   // Address of track 3   //201  stabM
-  0xDA, 0x00,                   // Address of track 4   //218  stabm
-  0xEB, 0x00,                   // Address of track 5   //235  chords
-  0x3F, 0x01,                   // Address of track 6   //319  drums
-  0x46, 0x01,                   // Address of track 7   //326  pair
+  0x68, 0x00,                   // Address of track 1   //104  bar
+  0x6B, 0x00,                   // Address of track 2   //107  bass
+  0xC1, 0x00,                   // Address of track 3   //193  stabM
+  0xCA, 0x00,                   // Address of track 4   //202  stabm
+  0xD3, 0x00,                   // Address of track 5   //211  chords
+  0x27, 0x01,                   // Address of track 6   //295  drums
+  0x2E, 0x01,                   // Address of track 7   //302  pair
+  0x3E, 0x01,                   // Address of track 8   //318  sh0
+  0x45, 0x01,                   // Address of track 9   //325  sh1
 
   0x00,                         // Channel 0 entry track (lead)
   0x05,                         // Channel 1 entry track (chords)
   0x02,                         // Channel 2 entry track (bass)
   0x06,                         // Channel 3 entry track (drums)
 
-  //"Track 0" lead  [112 bytes]
+  //"Track 0" lead  [104 bytes]
   ATM_VOL(MV(44)),
   ATM_SL_VOL(MS(3)),
   ATM_NOTE_F5_,
   ATM_DELAY(16),
   ATM_NOTE_A5,
-  ATM_DELAY(16),
-  ATM_NOTE_D6,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_D6,
   ATM_DELAY(24),
   ATM_NOTE_A5,
@@ -1038,9 +1003,7 @@ Song frmpWater[] = {          // total song in bytes = 363
   ATM_NOTE_G5,
   ATM_DELAY(16),
   ATM_NOTE_B5,
-  ATM_DELAY(16),
-  ATM_NOTE_D6,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_E6,
   ATM_DELAY(16),
   ATM_NOTE_C6_,
@@ -1056,15 +1019,11 @@ Song frmpWater[] = {          // total song in bytes = 363
   ATM_NOTE_F6_,
   ATM_DELAY(16),
   ATM_NOTE_B5,
-  ATM_DELAY(16),
-  ATM_NOTE_D6,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_F6_,
   ATM_DELAY(16),
   ATM_NOTE_G6,
-  ATM_DELAY(16),
-  ATM_NOTE_D6,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_B5,
   ATM_DELAY(16),
   ATM_NOTE_A5,
@@ -1074,9 +1033,7 @@ Song frmpWater[] = {          // total song in bytes = 363
   ATM_NOTE_E6,
   ATM_DELAY(16),
   ATM_NOTE_C6_,
-  ATM_DELAY(16),
-  ATM_NOTE_D6,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_A5,
   ATM_DELAY(16),
   ATM_NOTE_F5_,
@@ -1086,17 +1043,13 @@ Song frmpWater[] = {          // total song in bytes = 363
   ATM_NOTE_D6,
   ATM_DELAY(8),
   ATM_NOTE_G6,
-  ATM_DELAY(16),
-  ATM_NOTE_D6,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_A5,
   ATM_DELAY(8),
   ATM_NOTE_D6,
   ATM_DELAY(8),
   ATM_NOTE_F6_,
-  ATM_DELAY(16),
-  ATM_NOTE_D6,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_C6_,
   ATM_DELAY(8),
   ATM_NOTE_E6,
@@ -1116,9 +1069,7 @@ Song frmpWater[] = {          // total song in bytes = 363
   ATM_NOTE_B5,
   ATM_DELAY(16),
   ATM_NOTE_G5,
-  ATM_DELAY(16),
-  ATM_NOTE_D6,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_A5,
   ATM_DELAY(8),
   ATM_NOTE_C6_,
@@ -1173,29 +1124,17 @@ Song frmpWater[] = {          // total song in bytes = 363
   ATM_REPEAT(0, 1),   // 1x bar
   ATM_GOTO(2),   // -> bass
 
-  //"Track 3" stabM  [17 bytes]
+  //"Track 3" stabM  [9 bytes]
   ATM_ARP(0x43, 0x22),
-  ATM_DELAY(16),
-  ATM_VOL(MV(22)),
-  ATM_NOTE_D3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(16),
-  ATM_VOL(MV(22)),
-  ATM_NOTE_D3,
-  ATM_SL_VOL(MS(2)),
+  ATM_GOTO(8),   // -> sh0
+  ATM_GOTO(8),   // -> sh0
   ATM_DELAY(16),
   ATM_RETURN,
 
-  //"Track 4" stabm  [17 bytes]
+  //"Track 4" stabm  [9 bytes]
   ATM_ARP(0x34, 0x22),
-  ATM_DELAY(16),
-  ATM_VOL(MV(22)),
-  ATM_NOTE_D3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(16),
-  ATM_VOL(MV(22)),
-  ATM_NOTE_D3,
-  ATM_SL_VOL(MS(2)),
+  ATM_GOTO(8),   // -> sh0
+  ATM_GOTO(8),   // -> sh0
   ATM_DELAY(16),
   ATM_RETURN,
 
@@ -1252,92 +1191,77 @@ Song frmpWater[] = {          // total song in bytes = 363
   ATM_DELAY(16),
   ATM_RETURN,
 
+  //"Track 8" sh0  [7 bytes]
+  ATM_DELAY(16),
+  ATM_VOL(MV(22)),
+  ATM_NOTE_D3,
+  ATM_SL_VOL(MS(2)),
+  ATM_RETURN,
+
+  //"Track 9" sh1  [4 bytes]
+  ATM_DELAY(16),
+  ATM_NOTE_D6,
+  ATM_DELAY(16),
+  ATM_RETURN,
+
 };
 
 // ---------------------------------------------------------------------------
 // Fantasy Rampage - in game 4: Skyward
 // A major, light and bouncy: griffins and dragons riding the wind (air).
-// 486 bytes
+// 445 bytes
 // ---------------------------------------------------------------------------
-Song frmpAir[] = {          // total song in bytes = 486
-  0x08,                         // Number of tracks
+Song frmpAir[] = {          // total song in bytes = 445
+  0x0D,                         // Number of tracks
   0x00, 0x00,                   // Address of track 0   //0  lead
-  0xBE, 0x00,                   // Address of track 1   //190  bar
-  0xC7, 0x00,                   // Address of track 2   //199  bass
-  0x1D, 0x01,                   // Address of track 3   //285  stabM
-  0x3A, 0x01,                   // Address of track 4   //314  stabm
-  0x57, 0x01,                   // Address of track 5   //343  chords
-  0xAB, 0x01,                   // Address of track 6   //427  drums
-  0xB2, 0x01,                   // Address of track 7   //434  pair
+  0x95, 0x00,                   // Address of track 1   //149  bar
+  0x9E, 0x00,                   // Address of track 2   //158  bass
+  0xF4, 0x00,                   // Address of track 3   //244  stabM
+  0xFF, 0x00,                   // Address of track 4   //255  stabm
+  0x0A, 0x01,                   // Address of track 5   //266  chords
+  0x5E, 0x01,                   // Address of track 6   //350  drums
+  0x65, 0x01,                   // Address of track 7   //357  pair
+  0x76, 0x01,                   // Address of track 8   //374  sh0
+  0x82, 0x01,                   // Address of track 9   //386  sh1
+  0x8D, 0x01,                   // Address of track 10   //397  sh2
+  0x94, 0x01,                   // Address of track 11   //404  sh3
+  0x98, 0x01,                   // Address of track 12   //408  sh4
 
   0x00,                         // Channel 0 entry track (lead)
   0x05,                         // Channel 1 entry track (chords)
   0x02,                         // Channel 2 entry track (bass)
   0x06,                         // Channel 3 entry track (drums)
 
-  //"Track 0" lead  [190 bytes]
+  //"Track 0" lead  [149 bytes]
   ATM_VOL(MV(44)),
   ATM_SL_VOL(MS(5)),
   ATM_NOTE_A5,
   ATM_DELAY(8),
   ATM_NOTE_C6_,
   ATM_DELAY(8),
-  ATM_NOTE_E6,
-  ATM_DELAY(8),
-  ATM_NOTE_C6_,
-  ATM_DELAY(8),
-  ATM_NOTE_A5,
-  ATM_DELAY(8),
-  ATM_NOTE_C6_,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
+  ATM_GOTO(9),   // -> sh1
+  ATM_GOTO(9),   // -> sh1
   ATM_DELAY(16),
-  ATM_NOTE_E6,
-  ATM_DELAY(8),
-  ATM_NOTE_C6_,
-  ATM_DELAY(8),
-  ATM_NOTE_A5,
-  ATM_DELAY(8),
-  ATM_NOTE_C6_,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
-  ATM_DELAY(32),
-  ATM_NOTE_D6,
+  ATM_GOTO(12),   // -> sh4
   ATM_DELAY(8),
   ATM_NOTE_F6_,
   ATM_DELAY(8),
-  ATM_NOTE_A6,
-  ATM_DELAY(8),
-  ATM_NOTE_F6_,
-  ATM_DELAY(8),
-  ATM_NOTE_D6,
-  ATM_DELAY(8),
-  ATM_NOTE_F6_,
-  ATM_DELAY(8),
-  ATM_NOTE_A6,
+  ATM_GOTO(12),   // -> sh4
   ATM_DELAY(16),
   ATM_NOTE_G5_,
   ATM_DELAY(8),
   ATM_NOTE_B5,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
-  ATM_DELAY(8),
+  ATM_GOTO(11),   // -> sh3
   ATM_NOTE_B5,
   ATM_DELAY(8),
   ATM_NOTE_G5_,
   ATM_DELAY(32),
   ATM_NOTE_C6_,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
-  ATM_DELAY(8),
+  ATM_GOTO(11),   // -> sh3
   ATM_NOTE_A6,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
-  ATM_DELAY(8),
+  ATM_GOTO(11),   // -> sh3
   ATM_NOTE_C6_,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
-  ATM_DELAY(8),
+  ATM_GOTO(11),   // -> sh3
   ATM_NOTE_A6,
   ATM_DELAY(16),
   ATM_NOTE_A5,
@@ -1375,17 +1299,11 @@ Song frmpAir[] = {          // total song in bytes = 486
   ATM_NOTE_E6,
   ATM_DELAY(32),
   ATM_NOTE_A5,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
-  ATM_DELAY(8),
+  ATM_GOTO(11),   // -> sh3
   ATM_NOTE_C6_,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
-  ATM_DELAY(8),
+  ATM_GOTO(11),   // -> sh3
   ATM_NOTE_A5,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
-  ATM_DELAY(8),
+  ATM_GOTO(11),   // -> sh3
   ATM_NOTE_C6_,
   ATM_DELAY(16),
   ATM_NOTE_D6,
@@ -1400,26 +1318,13 @@ Song frmpAir[] = {          // total song in bytes = 486
   ATM_DELAY(16),
   ATM_NOTE_F6_,
   ATM_DELAY(16),
-  ATM_NOTE_E6,
-  ATM_DELAY(8),
-  ATM_NOTE_C6_,
-  ATM_DELAY(8),
-  ATM_NOTE_A5,
-  ATM_DELAY(8),
-  ATM_NOTE_C6_,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
-  ATM_DELAY(16),
+  ATM_GOTO(9),   // -> sh1
   ATM_NOTE_A6,
   ATM_DELAY(16),
   ATM_NOTE_B5,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
-  ATM_DELAY(8),
+  ATM_GOTO(11),   // -> sh3
   ATM_NOTE_G6_,
-  ATM_DELAY(8),
-  ATM_NOTE_E6,
-  ATM_DELAY(8),
+  ATM_GOTO(11),   // -> sh3
   ATM_NOTE_B5,
   ATM_DELAY(16),
   ATM_NOTE_G5_,
@@ -1436,11 +1341,7 @@ Song frmpAir[] = {          // total song in bytes = 486
   ATM_DELAY(16),
   ATM_NOTE_A5,
   ATM_DELAY(16),
-  ATM_NOTE_D6,
-  ATM_DELAY(8),
-  ATM_NOTE_F6_,
-  ATM_DELAY(8),
-  ATM_NOTE_A6,
+  ATM_GOTO(12),   // -> sh4
   ATM_DELAY(16),
   ATM_NOTE_F6_,
   ATM_DELAY(16),
@@ -1512,45 +1413,21 @@ Song frmpAir[] = {          // total song in bytes = 486
   ATM_REPEAT(0, 1),   // 1x bar
   ATM_GOTO(2),   // -> bass
 
-  //"Track 3" stabM  [29 bytes]
+  //"Track 3" stabM  [11 bytes]
   ATM_ARP(0x43, 0x22),
   ATM_DELAY(8),
-  ATM_VOL(MV(22)),
-  ATM_NOTE_A3,
-  ATM_SL_VOL(MS(2)),
+  ATM_GOTO(8),   // -> sh0
   ATM_DELAY(16),
-  ATM_VOL(MV(22)),
-  ATM_NOTE_A3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(16),
-  ATM_VOL(MV(22)),
-  ATM_NOTE_A3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(16),
-  ATM_VOL(MV(22)),
-  ATM_NOTE_A3,
-  ATM_SL_VOL(MS(2)),
+  ATM_GOTO(8),   // -> sh0
   ATM_DELAY(8),
   ATM_RETURN,
 
-  //"Track 4" stabm  [29 bytes]
+  //"Track 4" stabm  [11 bytes]
   ATM_ARP(0x34, 0x22),
   ATM_DELAY(8),
-  ATM_VOL(MV(22)),
-  ATM_NOTE_A3,
-  ATM_SL_VOL(MS(2)),
+  ATM_GOTO(8),   // -> sh0
   ATM_DELAY(16),
-  ATM_VOL(MV(22)),
-  ATM_NOTE_A3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(16),
-  ATM_VOL(MV(22)),
-  ATM_NOTE_A3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(16),
-  ATM_VOL(MV(22)),
-  ATM_NOTE_A3,
-  ATM_SL_VOL(MS(2)),
+  ATM_GOTO(8),   // -> sh0
   ATM_DELAY(8),
   ATM_RETURN,
 
@@ -1595,25 +1472,59 @@ Song frmpAir[] = {          // total song in bytes = 486
   ATM_REPEAT(15, 7),   // 16x pair
   ATM_GOTO(6),   // -> drums
 
-  //"Track 7" pair  [31 bytes]
+  //"Track 7" pair  [17 bytes]
   ATM_VOL(MV(36)),
   ATM_SL_VOL(MS(12)),
-  ATM_DELAY(8),
-  ATM_VOL(MV(12)),
-  ATM_SL_VOL(MS(12)),
-  ATM_DELAY(16),
-  ATM_VOL(MV(12)),
-  ATM_SL_VOL(MS(12)),
-  ATM_DELAY(8),
+  ATM_GOTO(10),   // -> sh2
+  ATM_GOTO(10),   // -> sh2
   ATM_VOL(MV(22)),
   ATM_SL_VOL(MS(6)),
-  ATM_DELAY(8),
-  ATM_VOL(MV(12)),
-  ATM_SL_VOL(MS(12)),
+  ATM_GOTO(10),   // -> sh2
+  ATM_GOTO(10),   // -> sh2
+  ATM_RETURN,
+
+  //"Track 8" sh0  [12 bytes]
+  ATM_VOL(MV(22)),
+  ATM_NOTE_A3,
+  ATM_SL_VOL(MS(2)),
   ATM_DELAY(16),
+  ATM_VOL(MV(22)),
+  ATM_NOTE_A3,
+  ATM_SL_VOL(MS(2)),
+  ATM_RETURN,
+
+  //"Track 9" sh1  [11 bytes]
+  ATM_NOTE_E6,
+  ATM_DELAY(8),
+  ATM_NOTE_C6_,
+  ATM_DELAY(8),
+  ATM_NOTE_A5,
+  ATM_DELAY(8),
+  ATM_NOTE_C6_,
+  ATM_DELAY(8),
+  ATM_NOTE_E6,
+  ATM_DELAY(16),
+  ATM_RETURN,
+
+  //"Track 10" sh2  [7 bytes]
+  ATM_DELAY(8),
   ATM_VOL(MV(12)),
   ATM_SL_VOL(MS(12)),
   ATM_DELAY(8),
+  ATM_RETURN,
+
+  //"Track 11" sh3  [4 bytes]
+  ATM_DELAY(8),
+  ATM_NOTE_E6,
+  ATM_DELAY(8),
+  ATM_RETURN,
+
+  //"Track 12" sh4  [6 bytes]
+  ATM_NOTE_D6,
+  ATM_DELAY(8),
+  ATM_NOTE_F6_,
+  ATM_DELAY(8),
+  ATM_NOTE_A6,
   ATM_RETURN,
 
 };
@@ -1621,19 +1532,20 @@ Song frmpAir[] = {          // total song in bytes = 486
 // ---------------------------------------------------------------------------
 // Fantasy Rampage - in game 5: Dragon Duel
 // B minor, slow and heavy footsteps: the final showdown.
-// 426 bytes
+// 419 bytes
 // ---------------------------------------------------------------------------
-Song frmpDragon[] = {          // total song in bytes = 426
-  0x09,                         // Number of tracks
+Song frmpDragon[] = {          // total song in bytes = 419
+  0x0A,                         // Number of tracks
   0x00, 0x00,                   // Address of track 0   //0  lead
   0x92, 0x00,                   // Address of track 1   //146  bar0
   0x9D, 0x00,                   // Address of track 2   //157  bar
   0xA8, 0x00,                   // Address of track 3   //168  bass
   0xFE, 0x00,                   // Address of track 4   //254  stabM
-  0x0E, 0x01,                   // Address of track 5   //270  stabm
-  0x1E, 0x01,                   // Address of track 6   //286  chords
-  0x72, 0x01,                   // Address of track 7   //370  drums
-  0x79, 0x01,                   // Address of track 8   //377  pair
+  0x06, 0x01,                   // Address of track 5   //262  stabm
+  0x0E, 0x01,                   // Address of track 6   //270  chords
+  0x62, 0x01,                   // Address of track 7   //354  drums
+  0x69, 0x01,                   // Address of track 8   //361  pair
+  0x83, 0x01,                   // Address of track 9   //387  sh0
 
   0x00,                         // Channel 0 entry track (lead)
   0x06,                         // Channel 1 entry track (chords)
@@ -1844,28 +1756,16 @@ Song frmpDragon[] = {          // total song in bytes = 426
   ATM_REPEAT(0, 2),   // 1x bar
   ATM_GOTO(3),   // -> bass
 
-  //"Track 4" stabM  [16 bytes]
+  //"Track 4" stabM  [8 bytes]
   ATM_ARP(0x43, 0x22),
-  ATM_VOL(MV(24)),
-  ATM_NOTE_B3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(32),
-  ATM_VOL(MV(24)),
-  ATM_NOTE_B3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(32),
+  ATM_GOTO(9),   // -> sh0
+  ATM_GOTO(9),   // -> sh0
   ATM_RETURN,
 
-  //"Track 5" stabm  [16 bytes]
+  //"Track 5" stabm  [8 bytes]
   ATM_ARP(0x34, 0x22),
-  ATM_VOL(MV(24)),
-  ATM_NOTE_B3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(32),
-  ATM_VOL(MV(24)),
-  ATM_NOTE_B3,
-  ATM_SL_VOL(MS(2)),
-  ATM_DELAY(32),
+  ATM_GOTO(9),   // -> sh0
+  ATM_GOTO(9),   // -> sh0
   ATM_RETURN,
 
   //"Track 6" chords  [84 bytes]
@@ -1925,6 +1825,13 @@ Song frmpDragon[] = {          // total song in bytes = 426
   ATM_VOL(MV(46)),
   ATM_SL_VOL(MS(12)),
   ATM_DELAY(8),
+  ATM_RETURN,
+
+  //"Track 9" sh0  [7 bytes]
+  ATM_VOL(MV(24)),
+  ATM_NOTE_B3,
+  ATM_SL_VOL(MS(2)),
+  ATM_DELAY(32),
   ATM_RETURN,
 
 };
